@@ -15,6 +15,7 @@ namespace eyeBrowser
 {
    public partial class App : TitleBarTabs
     {
+
         public App()
         {
             InitializeComponent();
