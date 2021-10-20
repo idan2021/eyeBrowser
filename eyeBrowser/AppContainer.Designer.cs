@@ -42,8 +42,8 @@ namespace eyeBrowser
             this.homeBtn = new Bunifu.UI.WinForms.BunifuPictureBox();
             this.forwardBtn = new Bunifu.UI.WinForms.BunifuPictureBox();
             this.pnlBody = new System.Windows.Forms.Panel();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.bunifuCards1.SuspendLayout();
             this.bunifuPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconSec)).BeginInit();
@@ -250,13 +250,6 @@ namespace eyeBrowser
             this.pnlBody.Size = new System.Drawing.Size(801, 399);
             this.pnlBody.TabIndex = 7;
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "protect.png");
-            this.imageList1.Images.SetKeyName(1, "warning_shield.png");
-            // 
             // chromiumWebBrowser1
             // 
             this.chromiumWebBrowser1.ActivateBrowserOnCreation = false;
@@ -266,6 +259,13 @@ namespace eyeBrowser
             this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";
             this.chromiumWebBrowser1.Size = new System.Drawing.Size(801, 399);
             this.chromiumWebBrowser1.TabIndex = 0;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "protect.png");
+            this.imageList1.Images.SetKeyName(1, "warning_shield.png");
             // 
             // AppContainer
             // 
@@ -312,7 +312,6 @@ namespace eyeBrowser
         private Bunifu.UI.WinForms.BunifuLoader loader;
         private Bunifu.UI.WinForms.BunifuPanel bunifuPanel1;
         private System.Windows.Forms.ImageList imageList1;
-        private Bunifu.UI.WinForms.BunifuTextBox bunifuTextBox1;
         private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
     }
 }

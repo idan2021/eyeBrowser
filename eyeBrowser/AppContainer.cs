@@ -1,13 +1,19 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
-using EasyTabs;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Windows.Forms;
 
 namespace eyeBrowser
 {
     public partial class AppContainer : Form
     {
+        List<String> webPages = new List<string>();
+        int current = 0;
         public AppContainer()
         {
             InitializeComponent();
@@ -23,9 +29,12 @@ namespace eyeBrowser
             CefSettings settings = new CefSettings();
             if (!Cef.IsInitialized)
                 Cef.Initialize(settings);
+
             chromeBrowser = new ChromiumWebBrowser("google.com");//Create new browser component of ChromiumWebBrowser with the initialize page of google
             chromiumWebBrowser1.Controls.Add(chromeBrowser);//Add the chromeBrowser to the chromiumWebBrowser1 and fill it to the chromiumWebBrowser1 window
             chromeBrowser.Dock = DockStyle.Fill;
+            current++;
+            webPages.Add(chromeBrowser.Address);
 
             chromeBrowser.LoadingStateChanged += ChromeBrowser_LoadingStateChanged;//The counter of the website for the loader, while it's counting the loader spins
             chromeBrowser.TitleChanged += ChromeBrowser_TitleChanged;//The counter for the change of the tab title
@@ -75,7 +84,40 @@ namespace eyeBrowser
         //Navigation button for the navigation of the url you typed
         private void navBtn_Click(object sender, EventArgs e)
         {
-            Navigation(urlTxt.Text);
+            MouseEventArgs me = (MouseEventArgs)e;
+            if (me.Button == MouseButtons.Left)
+            {
+                Navigation(urlTxt.Text);
+            }
+            if (me.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip cm = new ContextMenuStrip();
+                ToolStripMenuItem tsmi = new ToolStripMenuItem();
+                int webPagesLength = webPages.ToArray().Length;
+                Console.WriteLine(webPagesLength);
+                Console.WriteLine("The current: " + current);
+                foreach (string i in webPages)
+                {
+                    if (!(i.Contains("http://") || i.Contains("https://")))
+                    {
+                        var iconURL = "http://www.google.com/s2/favicons?domain=" + i;
+                        WebRequest request = HttpWebRequest.Create(iconURL);
+                        WebResponse response = request.GetResponse();
+                        Stream stream = response.GetResponseStream();
+                        Image favicon = Image.FromStream(stream);
+                        cm.Items.Add(i,favicon);
+                    }
+                }
+                cm.Show(navBtn, new Point(0, navBtn.Height));
+                cm.ItemClicked += new ToolStripItemClickedEventHandler(contexMenu_ItemClicked);
+            }
+        }
+
+        private void contexMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem item = e.ClickedItem;
+            Navigation(item.Text);
+
         }
 
         //Go to the home page which in this case is google
@@ -88,7 +130,11 @@ namespace eyeBrowser
         private void urlTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
+            {
                 Navigation(urlTxt.Text);
+                current++;
+                webPages.Add(urlTxt.Text);
+            }
         }
 
         //The navigation methos responsible for all the load commands of the websites the user enters in the url line
